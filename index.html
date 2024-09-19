@@ -33,8 +33,9 @@
         }
         
         header {
-            background-color: var(--primary-color);
-            color: white;
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
             padding: 20px 0;
         }
         
@@ -50,16 +51,17 @@
         }
         
         .hero {
-            background: linear-gradient(rgba(26, 95, 122, 0.8), rgba(26, 95, 122, 0.8)), url('background-image.jpg');
-            background-size: cover;
-            background-position: center;
+            position: relative;
             height: 100vh;
             display: flex;
             align-items: center;
             color: white;
+            overflow: hidden;
         }
         
         .hero-content {
+            position: relative;
+            z-index: 2;
             text-align: center;
         }
         
@@ -87,6 +89,28 @@
         
         .cta-button:hover {
             background-color: #45A494;
+        }
+        
+        #video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translateX(-50%) translateY(-50%);
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 95, 122, 0.7);
+            z-index: 1;
         }
         
         footer {
@@ -127,6 +151,11 @@
 
     <main>
         <section class="hero">
+            <video autoplay loop muted playsinline id="video-background">
+                <source src="background-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="overlay"></div>
             <div class="hero-content container">
                 <h1>Harnessing Data for Rare Disease Breakthroughs</h1>
                 <p>At OrphAlytics, we're committed to advancing treatments for rare diseases through innovative data analytics and cutting-edge technology. Our mission is to accelerate research and development in the field of orphan drugs, bringing hope to millions affected by rare conditions.</p>
