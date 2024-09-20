@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrphAlytics - Harnessing Data for Rare Disease Breakthroughs</title>
     <meta name="description" content="OrphAlytics is at the forefront of rare disease research, leveraging cutting-edge data analytics to accelerate breakthroughs in orphan drug development.">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
     <style>
         :root {
             --primary-color: #1A5F7A;
@@ -129,6 +139,52 @@
             text-decoration: underline;
         }
         
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        form input, form button {
+            margin: 10px 0;
+            padding: 10px;
+        }
+        
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
@@ -159,7 +215,7 @@
             <div class="hero-content container">
                 <h1>Harnessing Data for Rare Disease Breakthroughs</h1>
                 <p>At OrphAlytics, we're committed to advancing treatments for rare diseases through innovative data analytics and cutting-edge technology. Our mission is to accelerate research and development in the field of orphan drugs, bringing hope to millions affected by rare conditions.</p>
-                <a href="#" class="cta-button">Stay Informed</a>
+                <a href="#" class="cta-button" id="stayInformedBtn">Stay Informed</a>
             </div>
         </section>
     </main>
@@ -170,5 +226,70 @@
             <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
         </div>
     </footer>
+
+    <!-- Stay Informed Modal -->
+    <div id="stayInformedModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Stay Informed</h2>
+            <form id="stayInformedForm">
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("stayInformedModal");
+        const btn = document.getElementById("stayInformedBtn");
+        const span = document.getElementsByClassName("close")[0];
+        const form = document.getElementById("stayInformedForm");
+
+        btn.onclick = function(e) {
+            e.preventDefault();
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            
+            // Here you would typically send this data to your server
+            // For now, we'll just log it to the console
+            console.log(`Name: ${name}, Email: ${email}`);
+            
+            // You can replace this with an AJAX call to your server
+            fetch('https://your-server-endpoint.com/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert("Thank you for subscribing!");
+                modal.style.display = "none";
+                form.reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again later.");
+            });
+        }
+    </script>
 </body>
 </html>
