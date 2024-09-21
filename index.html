@@ -66,6 +66,7 @@
             height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             color: white;
             overflow: hidden;
         }
@@ -73,8 +74,8 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            text-align: left;
-            max-width: 600px;
+            text-align: center;
+            max-width: 800px;
         }
         
         .hero h1 {
@@ -188,10 +189,6 @@
         }
         
         @media (max-width: 768px) {
-            .hero-content {
-                text-align: center;
-            }
-            
             .hero h1 {
                 font-size: 2rem;
             }
@@ -257,6 +254,7 @@
         const btn = document.getElementById("stayInformedBtn");
         const span = document.getElementsByClassName("close")[0];
         const form = document.getElementById("stayInformedForm");
+        const video = document.getElementById('video-background');
 
         btn.onclick = function(e) {
             e.preventDefault();
@@ -278,20 +276,39 @@
             const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             
-            // Here you would typically send this data to your server
             console.log(`Name: ${name}, Email: ${email}`);
             
-            // Placeholder for server communication
             alert("Thank you for subscribing!");
             modal.style.display = "none";
             form.reset();
         }
 
-        // Ensure video plays on iOS devices
-        const video = document.getElementById('video-background');
-        video.play().catch(error => {
-            console.error("Error attempting to play video: ", error);
+        // Function to handle video playback
+        function handleVideoPlayback() {
+            video.play().catch(error => {
+                console.error("Error attempting to play video: ", error);
+                applyVideoFallback();
+            });
+        }
+
+        // Function to apply fallback when video fails
+        function applyVideoFallback() {
+            video.style.display = 'none';
+            document.querySelector('.hero').style.backgroundColor = '#1A5F7A';
+        }
+
+        // Attempt to play video when page loads
+        window.addEventListener('load', handleVideoPlayback);
+
+        // Attempt to play video when it becomes visible (for mobile devices)
+        document.addEventListener("visibilitychange", function() {
+            if (!document.hidden) {
+                handleVideoPlayback();
+            }
         });
+
+        // Fallback for video loading error
+        video.addEventListener('error', applyVideoFallback);
     </script>
 </body>
 </html>
