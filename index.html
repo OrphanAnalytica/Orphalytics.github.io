@@ -33,11 +33,11 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: var(--background-color);
+            background-color: var(--primary-color);
         }
         
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
@@ -126,6 +126,36 @@
             z-index: 1;
         }
         
+        .statistics {
+            background-color: var(--background-color);
+            padding: 50px 0;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 20px;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-description {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -200,6 +230,18 @@
             .logo {
                 width: 120px;
             }
+            
+            #video-background {
+                display: none;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
@@ -224,6 +266,25 @@
                     <h1>Harnessing Data for Rare Disease Breakthroughs</h1>
                     <p>At OrphAlytics, we're committed to advancing treatments for rare diseases through innovative data analytics and cutting-edge technology. Our mission is to accelerate research and development in the field of orphan drugs, bringing hope to millions affected by rare conditions.</p>
                     <a href="#" class="cta-button" id="stayInformedBtn">Stay Informed</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="statistics">
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat1">0</div>
+                        <div class="stat-description">Known Rare Diseases</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat2">0</div>
+                        <div class="stat-description">People Affected Globally</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat3">0</div>
+                        <div class="stat-description">Have No Approved Treatment</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -254,7 +315,6 @@
         const btn = document.getElementById("stayInformedBtn");
         const span = document.getElementsByClassName("close")[0];
         const form = document.getElementById("stayInformedForm");
-        const video = document.getElementById('video-background');
 
         btn.onclick = function(e) {
             e.preventDefault();
@@ -283,32 +343,32 @@
             form.reset();
         }
 
-        // Function to handle video playback
-        function handleVideoPlayback() {
-            video.play().catch(error => {
-                console.error("Error attempting to play video: ", error);
-                applyVideoFallback();
+        // Statistics animation
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    animateValue(document.getElementById("stat1"), 0, 10000, 2000);
+                    animateValue(document.getElementById("stat2"), 0, 300, 2000);
+                    animateValue(document.getElementById("stat3"), 0, 90, 2000);
+                    observer.unobserve(entry.target);
+                }
             });
-        }
+        }, { threshold: 0.5 });
 
-        // Function to apply fallback when video fails
-        function applyVideoFallback() {
-            video.style.display = 'none';
-            document.querySelector('.hero').style.backgroundColor = '#1A5F7A';
-        }
-
-        // Attempt to play video when page loads
-        window.addEventListener('load', handleVideoPlayback);
-
-        // Attempt to play video when it becomes visible (for mobile devices)
-        document.addEventListener("visibilitychange", function() {
-            if (!document.hidden) {
-                handleVideoPlayback();
-            }
-        });
-
-        // Fallback for video loading error
-        video.addEventListener('error', applyVideoFallback);
+        observer.observe(document.querySelector('.statistics'));
     </script>
 </body>
 </html>
