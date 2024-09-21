@@ -37,6 +37,7 @@
         }
         
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
@@ -51,12 +52,12 @@
         
         nav {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
         
         .logo {
-            width: 200px;
+            width: 150px;
             height: auto;
         }
         
@@ -72,18 +73,18 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            text-align: center;
+            text-align: left;
+            max-width: 600px;
         }
         
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
         }
         
         .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto 30px;
+            font-size: 1rem;
+            margin-bottom: 30px;
         }
         
         .cta-button {
@@ -111,6 +112,7 @@
             height: auto;
             z-index: -1;
             transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
         }
         
         .overlay {
@@ -157,7 +159,7 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
         }
         
@@ -186,12 +188,20 @@
         }
         
         @media (max-width: 768px) {
+            .hero-content {
+                text-align: center;
+            }
+            
             .hero h1 {
                 font-size: 2rem;
             }
             
             .hero p {
-                font-size: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                width: 120px;
             }
         }
     </style>
@@ -212,10 +222,12 @@
                 Your browser does not support the video tag.
             </video>
             <div class="overlay"></div>
-            <div class="hero-content container">
-                <h1>Harnessing Data for Rare Disease Breakthroughs</h1>
-                <p>At OrphAlytics, we're committed to advancing treatments for rare diseases through innovative data analytics and cutting-edge technology. Our mission is to accelerate research and development in the field of orphan drugs, bringing hope to millions affected by rare conditions.</p>
-                <a href="#" class="cta-button" id="stayInformedBtn">Stay Informed</a>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Harnessing Data for Rare Disease Breakthroughs</h1>
+                    <p>At OrphAlytics, we're committed to advancing treatments for rare diseases through innovative data analytics and cutting-edge technology. Our mission is to accelerate research and development in the field of orphan drugs, bringing hope to millions affected by rare conditions.</p>
+                    <a href="#" class="cta-button" id="stayInformedBtn">Stay Informed</a>
+                </div>
             </div>
         </section>
     </main>
@@ -267,29 +279,19 @@
             const email = document.getElementById("email").value;
             
             // Here you would typically send this data to your server
-            // For now, we'll just log it to the console
             console.log(`Name: ${name}, Email: ${email}`);
             
-            // You can replace this with an AJAX call to your server
-            fetch('https://your-server-endpoint.com/subscribe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                alert("Thank you for subscribing!");
-                modal.style.display = "none";
-                form.reset();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert("An error occurred. Please try again later.");
-            });
+            // Placeholder for server communication
+            alert("Thank you for subscribing!");
+            modal.style.display = "none";
+            form.reset();
         }
+
+        // Ensure video plays on iOS devices
+        const video = document.getElementById('video-background');
+        video.play().catch(error => {
+            console.error("Error attempting to play video: ", error);
+        });
     </script>
 </body>
 </html>
